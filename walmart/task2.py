@@ -1,7 +1,7 @@
 import pandas as pd
 import pandasql as psql
 
-df = pd.read_csv('WalmartData.csv')
+df = pd.read_csv('WalmartData.csv', header=0)
 
 #1.  Retrieve all columns for sales made in a specific branch (e.g., Branch 'A').
 # sales_branch1 = "SELECT * FROM df WHERE Branch='A'"
@@ -55,20 +55,38 @@ df = pd.read_csv('WalmartData.csv')
 
 
 # 9.Retrieve sales transactions that occurred on weekends.
-
-
+# df['Date'] = pd.to_datetime(df['Date'], format='%d-%m-%Y')
+# weekend = "select * from df where strftime('%w', Date) IN ('5', '6')"
+# result_weekend = psql.sqldf(weekend, locals())
+# print(result_weekend)
 
 # 10.Calculate the total sales and gross income for each month.
-
+# df['Date'] = pd.to_datetime(df['Date'], format='%d-%m-%Y')
+# month = "select sum(total) as Total, sum(gross_income) as Gross_Income, strftime('%m', Date) as Month from df group by Month"
+# result_month = psql.sqldf(month, locals())
+# print(result_month)
+ 
  
 # 11.Find the number of sales transactions that occurred after 6 PM.
-sales_after6 = "select count(*) as total_transaction from df where time > '18:00:00'"
-result_sales_after6 = psql.sqldf(sales_after6, locals())
-print(result_sales_after6)
+# sales_after6 = "select count(*) as total_transaction from df where time > '18:00:00'"
+# result_sales_after6 = psql.sqldf(sales_after6, locals())
+# print(result_sales_after6)
 
 
 # 12.List the sales transactions that have a higher total than the average total of all transactions. 
+# higher = "select * from df where total > (SELECT avg(Total) FROM df)"
+# result_higher = psql.sqldf(higher, locals())
+# print(result_higher)
 
 
+# 13. Calculate the cumulative gross income for each branch by date.
+# cumulative = "select sum(gross_income) as gross_income, branch, date from df group by branch, date"
+# result_cumulative = psql.sqldf(cumulative, locals())
+# print(result_cumulative)
 
-# 13. Calculate the cumulative gross income for each branch by date. 15. Find the total cogs for each customer type in each city.
+
+# 15. Find the total cogs for each customer type in each city.
+# total_cog = "select sum(cogs) as total_cogs, customer_type, city from df group by customer_type, city "
+# result_total_cog = psql.sqldf(total_cog, locals())
+# print(result_total_cog)
+
